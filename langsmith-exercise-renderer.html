@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aikea Exercise Renderer - LangSmith</title>
+
+  <!-- KaTeX CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+
+  <!-- KaTeX JS -->
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+
+  <style>
+    /* Reset and base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Aikea color system */
+      --accent-pink: #FF36AB;
+      --info-400: #204FD0;
+      --purple-800: #35105D;
+      --primary-text-high: #CC4E00;
+      --success-base: #22C55E;
+      --success-light: #DCFCE7;
+      --error-base: #EF4444;
+      --error-light: #FEE2E2;
+      --neutral-100: #E8E7E6;
+      --neutral-300: #D1D1D1;
+      --tertiary-50: #FCFBFC;
+      --blue-50: #EFF6FF;
+      --border-color: #204FD0;
+
+      /* Typography */
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: #FAFAFA;
+      color: #1F2937;
+      line-height: 1.5;
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    /* Container for all exercises */
+    .exercises-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Individual exercise card */
+    .exercise {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 24px;
+      border: 1px solid var(--neutral-100);
+    }
+
+    /* Exercise header with type badge */
+    .exercise-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--neutral-100);
+    }
+
+    .exercise-type-badge {
+      background: var(--blue-50);
+      color: var(--info-400);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .exercise-number {
+      color: #6B7280;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Card sections (for [card] tags) */
+    .card-section {
+      background: var(--tertiary-50);
+      border: 1.5px solid var(--neutral-100);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-section.align-center {
+      align-items: center;
+    }
+
+    .card-section.align-start {
+      align-items: flex-start;
+    }
+
+    .card-section.align-end {
+      align-items: flex-end;
+    }
+
+    .card-section.justify-center {
+      justify-content: center;
+    }
+
+    /* Exercise content */
+    .exercise-content {
+      font-size: 18px;
+      color: #1F2937;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    /* Choices section */
+    .choices-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .choices-container.layout-row {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .choices-container.layout-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Individual choice button */
+    .choice-button {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: white;
+      border: 1.5px solid var(--neutral-300);
+      border-radius: 12px;
+      cursor: default;
+      transition: all 0.15s ease;
+      min-height: 54px;
+    }
+
+    .choice-button.correct {
+      background: var(--success-light);
+      border-color: var(--success-base);
+    }
+
+    .choice-button .choice-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .choice-button.correct .choice-indicator {
+      background: var(--success-base);
+      color: white;
+    }
+
+    .choice-button:not(.correct) .choice-indicator {
+      background: var(--neutral-100);
+      color: #6B7280;
+    }
+
+    .choice-content {
+      flex: 1;
+      font-size: 16px;
+    }
+
+    .correct-icon {
+      color: var(--success-base);
+      font-size: 18px;
+      margin-left: auto;
+    }
+
+    /* Math rendering */
+    .katex {
+      font-size: 1.1em;
+    }
+
+    .katex-display {
+      margin: 12px 0;
+    }
+
+    /* Color styling for text (matching Outex color map) */
+    .color-accent-pink {
+      color: var(--accent-pink);
+    }
+
+    .color-info-400 {
+      color: var(--info-400);
+    }
+
+    .color-purple-800 {
+      color: var(--purple-800);
+    }
+
+    .color-primary-text-high {
+      color: var(--primary-text-high);
+    }
+
+    /* Debug section */
+    .debug-section {
+      margin-top: 32px;
+      border-top: 1px solid var(--neutral-100);
+      padding-top: 16px;
+    }
+
+    .debug-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: 1px solid var(--neutral-300);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #6B7280;
+      transition: all 0.15s ease;
+    }
+
+    .debug-toggle:hover {
+      background: var(--tertiary-50);
+      border-color: var(--info-400);
+      color: var(--info-400);
+    }
+
+    .debug-toggle .arrow {
+      transition: transform 0.2s ease;
+    }
+
+    .debug-toggle.expanded .arrow {
+      transform: rotate(90deg);
+    }
+
+    .debug-content {
+      display: none;
+      margin-top: 12px;
+      background: #1F2937;
+      color: #E5E7EB;
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .debug-content.visible {
+      display: block;
+    }
+
+    .debug-content pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* Loading and error states */
+    .loading-state {
+      text-align: center;
+      padding: 48px;
+      color: #6B7280;
+    }
+
+    .loading-state .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--neutral-100);
+      border-top-color: var(--info-400);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-state {
+      background: var(--error-light);
+      border: 1px solid var(--error-base);
+      border-radius: 12px;
+      padding: 20px;
+      color: #991B1B;
+    }
+
+    .error-state h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px;
+      color: #6B7280;
+      background: var(--tertiary-50);
+      border-radius: 12px;
+      border: 1px dashed var(--neutral-300);
+    }
+
+    .empty-state h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #374151;
+    }
+
+    /* Metadata section */
+    .metadata-section {
+      background: var(--blue-50);
+      border: 1px solid var(--info-400);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+
+    .metadata-section h4 {
+      color: var(--info-400);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .metadata-item {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .metadata-label {
+      color: #6B7280;
+      font-weight: 500;
+    }
+
+    .metadata-value {
+      color: #1F2937;
+    }
+
+    /* Data type indicator */
+    .data-type-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .data-type-indicator.output {
+      background: #DBEAFE;
+      color: #1E40AF;
+    }
+
+    .data-type-indicator.reference {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Waiting for exercise data...</p>
+      <p style="font-size: 12px; margin-top: 8px; color: #9CA3AF;">Listening for postMessage events from LangSmith</p>
+      <button onclick="window.location.href='?demo=true'" style="margin-top: 16px; padding: 8px 16px; background: var(--info-400); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Load Demo Data</button>
+    </div>
+  </div>
+
+  <script>
+    // Global state
+    let currentData = null;
+    let debugVisible = false;
+
+    // Initialize when KaTeX is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // Listen for postMessage from LangSmith
+      window.addEventListener('message', handleMessage);
+
+      // Also check for data passed via URL params (for testing)
+      const urlParams = new URLSearchParams(window.location.search);
+      const testData = urlParams.get('testData');
+      if (testData) {
+        try {
+          const parsed = JSON.parse(decodeURIComponent(testData));
+          handleMessage({ data: parsed });
+        } catch (e) {
+          console.error('Failed to parse test data:', e);
+        }
+      }
+    });
+
+    /**
+     * Handle incoming postMessage events from LangSmith
+     */
+    function handleMessage(event) {
+      // LangSmith sends data in this format:
+      // { type: "output" | "reference", data: [...], metadata: { inputs: {...} } }
+      const message = event.data;
+
+      // Validate message structure
+      if (!message || typeof message !== 'object') {
+        return;
+      }
+
+      // Check if this looks like LangSmith data
+      if (!message.data && !message.type) {
+        return;
+      }
+
+      currentData = message;
+      renderExercises(message);
+    }
+
+    /**
+     * Main render function
+     */
+    function renderExercises(message) {
+      const app = document.getElementById('app');
+
+      try {
+        // Normalize data to always be an array
+        let exercises = message.data;
+        if (!exercises) {
+          app.innerHTML = renderEmptyState('No exercise data received');
+          return;
+        }
+
+        // Handle single exercise object
+        if (!Array.isArray(exercises)) {
+          exercises = [exercises];
+        }
+
+        // Filter out null/undefined entries
+        exercises = exercises.filter(e => e != null);
+
+        if (exercises.length === 0) {
+          app.innerHTML = renderEmptyState('Exercise array is empty');
+          return;
+        }
+
+        // Build HTML
+        let html = '';
+
+        // Data type indicator
+        if (message.type) {
+          html += `<div class="data-type-indicator ${message.type}">
+            ${message.type === 'output' ? '&#x1F4E4;' : '&#x1F4CB;'}
+            ${message.type === 'output' ? 'Model Output' : 'Reference Data'}
+          </div>`;
+        }
+
+        // Metadata section (if available)
+        if (message.metadata && message.metadata.inputs) {
+          html += renderMetadata(message.metadata.inputs);
+        }
+
+        // Exercises container
+        html += '<div class="exercises-container">';
+
+        exercises.forEach((exercise, index) => {
+          html += renderExercise(exercise, index, exercises.length);
+        });
+
+        html += '</div>';
+
+        // Debug section
+        html += renderDebugSection(message);
+
+        app.innerHTML = html;
+
+        // Setup debug toggle
+        setupDebugToggle();
+
+      } catch (error) {
+        app.innerHTML = renderErrorState(error);
+      }
+    }
+
+    /**
+     * Render a single exercise
+     */
+    function renderExercise(exercise, index, total) {
+      const exerciseType = exercise.exerciseType || 'UNKNOWN';
+      const content = exercise.content || '';
+      const choices = exercise.choices || [];
+
+      let html = `<div class="exercise">`;
+
+      // Header
+      html += `<div class="exercise-header">
+        <span class="exercise-type-badge">${formatExerciseType(exerciseType)}</span>
+        ${total > 1 ? `<span class="exercise-number">Exercise ${index + 1} of ${total}</span>` : ''}
+      </div>`;
+
+      // Content (with card handling)
+      html += renderContent(content);
+
+      // Choices (for MULTIPLE_CHOICE type)
+      if (choices.length > 0) {
+        html += renderChoices(choices, exerciseType);
+      }
+
+      html += '</div>';
+
+      return html;
+    }
+
+    /**
+     * Render exercise content with [card] tag support
+     */
+    function renderContent(content) {
+      if (!content) return '';
+
+      // Parse [card] tags
+      const blocks = parseCardTags(content);
+
+      let html = '';
+
+      blocks.forEach(block => {
+        if (block.type === 'card') {
+          const alignClass = block.align ? `align-${block.align}` : 'align-center';
+          const justifyClass = block.justify ? `justify-${block.justify}` : '';
+          html += `<div class="card-section ${alignClass} ${justifyClass}">
+            <div class="exercise-content">${formatMathContent(block.value)}</div>
+          </div>`;
+        } else {
+          const formatted = formatMathContent(block.value);
+          if (formatted.trim()) {
+            html += `<div class="exercise-content">${formatted}</div>`;
+          }
+        }
+      });
+
+      return html;
+    }
+
+    /**
+     * Parse [card] tags from content
+     */
+    function parseCardTags(content) {
+      const blocks = [];
+      let currentIndex = 0;
+
+      while (currentIndex < content.length) {
+        // Find next [card] tag
+        const cardStartMatch = content.substring(currentIndex).match(/\[card[^\]]*\]/i);
+
+        if (!cardStartMatch) {
+          // No more cards, add remaining text
+          const remaining = content.substring(currentIndex).trim();
+          if (remaining) {
+            blocks.push({ type: 'text', value: remaining });
+          }
+          break;
+        }
+
+        const cardStartIndex = currentIndex + cardStartMatch.index;
+        const cardContentStart = cardStartIndex + cardStartMatch[0].length;
+
+        // Parse align and justify from tag
+        const fullTag = cardStartMatch[0];
+        let align, justify;
+
+        const alignMatch = fullTag.match(/align=(center|start|end)/i);
+        if (alignMatch) align = alignMatch[1].toLowerCase();
+
+        const justifyMatch = fullTag.match(/justify=(center|start|end)/i);
+        if (justifyMatch) justify = justifyMatch[1].toLowerCase();
+
+        // Find closing tag
+        const cardEndMatch = content.substring(cardContentStart).match(/\[\/card\]/i);
+
+        if (!cardEndMatch) {
+          // No closing tag, treat rest as text
+          const remaining = content.substring(currentIndex).trim();
+          if (remaining) {
+            blocks.push({ type: 'text', value: remaining });
+          }
+          break;
+        }
+
+        const cardEndIndex = cardContentStart + cardEndMatch.index;
+        const cardContentEnd = cardEndIndex + cardEndMatch[0].length;
+
+        // Add text before card
+        const textBefore = content.substring(currentIndex, cardStartIndex).trim();
+        if (textBefore) {
+          blocks.push({ type: 'text', value: textBefore });
+        }
+
+        // Add card content
+        const cardContent = content.substring(cardContentStart, cardEndIndex).trim();
+        if (cardContent) {
+          blocks.push({
+            type: 'card',
+            value: cardContent,
+            align,
+            justify
+          });
+        }
+
+        currentIndex = cardContentEnd;
+      }
+
+      return blocks;
+    }
+
+    /**
+     * Format content for math rendering
+     * Renders LaTeX inline using KaTeX
+     */
+    function formatMathContent(content) {
+      if (!content) return '';
+
+      // Check if KaTeX is available
+      if (typeof katex === 'undefined') {
+        console.error('KaTeX not loaded!');
+        return escapeHtmlLight(content).replace(/\n/g, '<br>');
+      }
+
+      // Use regex to find and replace math expressions
+      let result = content;
+
+      // First handle display math $$...$$
+      result = result.replace(/\$\$([^$]+)\$\$/g, (match, math) => {
+        try {
+          return katex.renderToString(math, { displayMode: true, throwOnError: false });
+        } catch (e) {
+          console.warn('KaTeX display error:', e, math);
+          return match;
+        }
+      });
+
+      // Then handle inline math $...$
+      result = result.replace(/\$([^$]+)\$/g, (match, math) => {
+        try {
+          return katex.renderToString(math, { displayMode: false, throwOnError: false });
+        } catch (e) {
+          console.warn('KaTeX inline error:', e, math);
+          return match;
+        }
+      });
+
+      // Handle newlines and escape HTML in non-math parts
+      result = result.replace(/\n/g, '<br>');
+
+      return result;
+    }
+
+    function escapeHtmlLight(text) {
+      return text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    /**
+     * Escape HTML special characters (for non-math content like metadata)
+     */
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    /**
+     * Render choices for multiple choice exercises
+     */
+    function renderChoices(choices, exerciseType) {
+      // Determine layout based on choices
+      const layout = choices.length <= 4 ? 'layout-column' : 'layout-grid';
+
+      let html = `<div class="choices-container ${layout}">`;
+
+      choices.forEach((choice, index) => {
+        const isCorrect = index === 0; // First choice is always correct
+        const letter = String.fromCharCode(65 + index); // A, B, C, D...
+
+        html += `<div class="choice-button ${isCorrect ? 'correct' : ''}">
+          <span class="choice-indicator">${isCorrect ? '&#x2713;' : letter}</span>
+          <span class="choice-content">${formatMathContent(choice)}</span>
+          ${isCorrect ? '<span class="correct-icon">&#x2713;</span>' : ''}
+        </div>`;
+      });
+
+      html += '</div>';
+
+      return html;
+    }
+
+    /**
+     * Render metadata section
+     */
+    function renderMetadata(inputs) {
+      const entries = Object.entries(inputs);
+      if (entries.length === 0) return '';
+
+      let html = '<div class="metadata-section"><h4>Input Parameters</h4>';
+
+      entries.forEach(([key, value]) => {
+        const displayValue = typeof value === 'object'
+          ? JSON.stringify(value, null, 2).substring(0, 100) + '...'
+          : String(value).substring(0, 100);
+
+        html += `<div class="metadata-item">
+          <span class="metadata-label">${escapeHtml(key)}:</span>
+          <span class="metadata-value">${escapeHtml(displayValue)}</span>
+        </div>`;
+      });
+
+      html += '</div>';
+      return html;
+    }
+
+    /**
+     * Render debug section
+     */
+    function renderDebugSection(data) {
+      return `<div class="debug-section">
+        <button class="debug-toggle" onclick="toggleDebug()">
+          <span class="arrow">&#x25B6;</span>
+          Show Raw JSON
+        </button>
+        <div class="debug-content" id="debugContent">
+          <pre>${escapeHtml(JSON.stringify(data, null, 2))}</pre>
+        </div>
+      </div>`;
+    }
+
+    /**
+     * Toggle debug section visibility
+     */
+    function toggleDebug() {
+      debugVisible = !debugVisible;
+      const content = document.getElementById('debugContent');
+      const toggle = document.querySelector('.debug-toggle');
+
+      if (debugVisible) {
+        content.classList.add('visible');
+        toggle.classList.add('expanded');
+        toggle.innerHTML = '<span class="arrow">&#x25B6;</span> Hide Raw JSON';
+      } else {
+        content.classList.remove('visible');
+        toggle.classList.remove('expanded');
+        toggle.innerHTML = '<span class="arrow">&#x25B6;</span> Show Raw JSON';
+      }
+    }
+
+    /**
+     * Setup debug toggle event listener
+     */
+    function setupDebugToggle() {
+      // Event listener is attached via onclick in the HTML
+    }
+
+    /**
+     * Render empty state
+     */
+    function renderEmptyState(message) {
+      return `<div class="empty-state">
+        <h3>No Exercises to Display</h3>
+        <p>${escapeHtml(message)}</p>
+      </div>`;
+    }
+
+    /**
+     * Render error state
+     */
+    function renderErrorState(error) {
+      return `<div class="error-state">
+        <h3>Error Rendering Exercises</h3>
+        <p>${escapeHtml(error.message || 'Unknown error occurred')}</p>
+        <pre style="margin-top: 12px; font-size: 11px; opacity: 0.8;">${escapeHtml(error.stack || '')}</pre>
+      </div>`;
+    }
+
+    /**
+     * Format exercise type for display
+     */
+    function formatExerciseType(type) {
+      if (!type) return 'Exercise';
+
+      // Convert MULTIPLE_CHOICE to "Multiple Choice"
+      return type
+        .replace(/_/g, ' ')
+        .toLowerCase()
+        .replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    /**
+     * Render math using KaTeX
+     */
+    function renderMath() {
+      // Wait for KaTeX to be available
+      if (typeof katex === 'undefined' || typeof renderMathInElement === 'undefined') {
+        setTimeout(renderMath, 100);
+        return;
+      }
+
+      const container = document.getElementById('app');
+
+      try {
+        renderMathInElement(container, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          throwOnError: false,
+          errorColor: '#EF4444',
+          strict: false,
+          trust: true,
+          macros: {
+            "\\blank": "\\underline{\\hspace{2em}}",
+            "\\ans": "\\boxed{#1}"
+          }
+        });
+      } catch (e) {
+        console.warn('KaTeX rendering error:', e);
+      }
+    }
+
+    // Expose functions for testing
+    window.aikea = {
+      renderExercises,
+      handleMessage,
+      parseCardTags,
+      formatMathContent
+    };
+
+    // Demo data for testing - can be triggered via URL param ?demo=true
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('demo') === 'true') {
+      setTimeout(() => {
+        handleMessage({
+          data: {
+            type: 'output',
+            data: [
+              {
+                content: "[card]$\\left(\\frac{b^5}{b^?}\\right)^2=b^4$[/card]\nWhich value for $?$ makes the statement true?",
+                choices: ["$2$", "$3$", "$4$", "$5$"],
+                exerciseType: "MULTIPLE_CHOICE"
+              },
+              {
+                content: "Simplify the expression: $3x^2 + 2x - 5 + x^2 - 3x + 2$",
+                choices: ["$4x^2 - x - 3$", "$4x^2 + x - 3$", "$2x^2 - x - 3$", "$4x^2 - x + 3$"],
+                exerciseType: "MULTIPLE_CHOICE"
+              },
+              {
+                content: "[card align=center]$\\sqrt{144} = ?$[/card]\nFind the square root.",
+                choices: ["$12$", "$14$", "$11$", "$13$"],
+                exerciseType: "MULTIPLE_CHOICE"
+              }
+            ],
+            metadata: {
+              inputs: {
+                topic: "Exponent Rules & Algebra",
+                difficulty: "medium",
+                grade: "8th"
+              }
+            }
+          }
+        });
+      }, 300);
+    }
+  </script>
+</body>
+</html>
