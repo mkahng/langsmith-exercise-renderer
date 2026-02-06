@@ -34,6 +34,8 @@
       --tertiary-50: #FCFBFC;
       --blue-50: #EFF6FF;
       --border-color: #204FD0;
+      --warning-base: #F59E0B;
+      --warning-light: #FEF3C7;
 
       /* Typography */
       --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -85,6 +87,41 @@
       border-radius: 12px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+    }
+
+    .exercise-type-badge.multi-select {
+      background: #F3E8FF;
+      color: #7C3AED;
+    }
+
+    .exercise-type-badge.match {
+      background: #FEF3C7;
+      color: #D97706;
+    }
+
+    .exercise-type-badge.true-false {
+      background: #ECFDF5;
+      color: #059669;
+    }
+
+    .exercise-type-badge.arrange {
+      background: #FFF7ED;
+      color: #EA580C;
+    }
+
+    .exercise-type-badge.type {
+      background: #F0F9FF;
+      color: #0284C7;
+    }
+
+    .exercise-type-badge.grouping {
+      background: #FDF2F8;
+      color: #DB2777;
+    }
+
+    .exercise-type-badge.table {
+      background: #F5F3FF;
+      color: #6D28D9;
     }
 
     .exercise-number {
@@ -187,6 +224,24 @@
       color: #6B7280;
     }
 
+    /* Checkbox style for multi-select */
+    .choice-button .choice-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--neutral-300);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .choice-button.correct .choice-checkbox {
+      background: var(--success-base);
+      border-color: var(--success-base);
+      color: white;
+    }
+
     .choice-content {
       flex: 1;
       font-size: 16px;
@@ -196,6 +251,184 @@
       color: var(--success-base);
       font-size: 18px;
       margin-left: auto;
+    }
+
+    /* Match exercise styles */
+    .match-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .match-pair {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+      background: var(--success-light);
+      border: 1.5px solid var(--success-base);
+      border-radius: 12px;
+    }
+
+    .match-item {
+      flex: 1;
+      padding: 10px 16px;
+      background: white;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .match-arrow {
+      color: var(--success-base);
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    /* Arrange exercise styles */
+    .arrange-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .arrange-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: var(--success-light);
+      border: 1.5px solid var(--success-base);
+      border-radius: 12px;
+    }
+
+    .arrange-number {
+      width: 28px;
+      height: 28px;
+      background: var(--success-base);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .arrange-content {
+      flex: 1;
+      font-size: 16px;
+    }
+
+    /* Type/Input exercise styles */
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .input-field {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .input-label {
+      font-size: 14px;
+      color: #6B7280;
+      min-width: 80px;
+    }
+
+    .input-answer {
+      flex: 1;
+      padding: 12px 16px;
+      background: var(--success-light);
+      border: 1.5px solid var(--success-base);
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'SF Mono', 'Monaco', monospace;
+    }
+
+    /* Grouping exercise styles */
+    .grouping-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grouping-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .grouping-header {
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #6B7280;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--neutral-100);
+      margin-bottom: 8px;
+    }
+
+    .grouping-header.left {
+      color: var(--info-400);
+      border-color: var(--info-400);
+    }
+
+    .grouping-header.right {
+      color: var(--accent-pink);
+      border-color: var(--accent-pink);
+    }
+
+    .grouping-item {
+      padding: 12px 16px;
+      background: white;
+      border: 1.5px solid var(--neutral-300);
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .grouping-item.left {
+      border-color: var(--info-400);
+      background: var(--blue-50);
+    }
+
+    .grouping-item.right {
+      border-color: var(--accent-pink);
+      background: #FDF2F8;
+    }
+
+    /* Table exercise styles */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .exercise-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    .exercise-table th,
+    .exercise-table td {
+      padding: 12px 16px;
+      border: 1px solid var(--neutral-100);
+      text-align: center;
+    }
+
+    .exercise-table th {
+      background: var(--tertiary-50);
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .exercise-table td.answer {
+      background: var(--success-light);
+      font-family: 'SF Mono', 'Monaco', monospace;
     }
 
     /* Math rendering */
@@ -385,6 +618,17 @@
       background: #FEF3C7;
       color: #92400E;
     }
+
+    /* Blank/fill-in styling */
+    .blank-answer {
+      display: inline-block;
+      padding: 2px 12px;
+      background: var(--success-light);
+      border: 1px solid var(--success-base);
+      border-radius: 4px;
+      font-family: 'SF Mono', 'Monaco', monospace;
+      margin: 0 4px;
+    }
   </style>
 </head>
 <body>
@@ -401,6 +645,26 @@
     // Global state
     let currentData = null;
     let debugVisible = false;
+
+    // Exercise type constants
+    const EXERCISE_TYPES = {
+      MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
+      MULTI_SELECT: 'MULTI_SELECT',
+      TRUE_OR_FALSE: 'TRUE_OR_FALSE',
+      MATCH: 'MATCH',
+      MATCH_WITH_IMAGE: 'MATCH_WITH_IMAGE',
+      ARRANGE: 'ARRANGE',
+      COMPLETE_ARRANGE: 'COMPLETE_ARRANGE',
+      TYPE: 'TYPE',
+      GROUPING: 'GROUPING',
+      TABLE_FILL: 'TABLE_FILL',
+      GRAPH: 'GRAPH',
+      STATIC: 'STATIC',
+      POLL: 'POLL',
+      HARD_SKILL: 'HARD_SKILL',
+      SEMI_HARD_SKILL: 'SEMI_HARD_SKILL',
+      MULTIPLE_CHOICE_WITH_IMAGE: 'MULTIPLE_CHOICE_WITH_IMAGE'
+    };
 
     // Initialize when KaTeX is ready
     document.addEventListener('DOMContentLoaded', () => {
@@ -508,32 +772,332 @@
     }
 
     /**
-     * Render a single exercise
+     * Render a single exercise based on its type
      */
     function renderExercise(exercise, index, total) {
       const exerciseType = exercise.exerciseType || 'UNKNOWN';
       const content = exercise.content || '';
-      const choices = exercise.choices || [];
 
       let html = `<div class="exercise">`;
 
-      // Header
+      // Header with type badge
+      const badgeClass = getTypeBadgeClass(exerciseType);
       html += `<div class="exercise-header">
-        <span class="exercise-type-badge">${formatExerciseType(exerciseType)}</span>
+        <span class="exercise-type-badge ${badgeClass}">${formatExerciseType(exerciseType)}</span>
         ${total > 1 ? `<span class="exercise-number">Exercise ${index + 1} of ${total}</span>` : ''}
       </div>`;
 
       // Content (with card handling)
       html += renderContent(content);
 
-      // Choices (for MULTIPLE_CHOICE type)
-      if (choices.length > 0) {
-        html += renderChoices(choices, exerciseType);
+      // Render based on exercise type
+      switch (exerciseType) {
+        case EXERCISE_TYPES.MULTIPLE_CHOICE:
+        case EXERCISE_TYPES.MULTIPLE_CHOICE_WITH_IMAGE:
+        case EXERCISE_TYPES.POLL:
+          html += renderMultipleChoice(exercise);
+          break;
+        case EXERCISE_TYPES.MULTI_SELECT:
+          html += renderMultiSelect(exercise);
+          break;
+        case EXERCISE_TYPES.TRUE_OR_FALSE:
+          html += renderTrueOrFalse(exercise);
+          break;
+        case EXERCISE_TYPES.MATCH:
+        case EXERCISE_TYPES.MATCH_WITH_IMAGE:
+          html += renderMatch(exercise);
+          break;
+        case EXERCISE_TYPES.ARRANGE:
+        case EXERCISE_TYPES.COMPLETE_ARRANGE:
+          html += renderArrange(exercise);
+          break;
+        case EXERCISE_TYPES.TYPE:
+        case EXERCISE_TYPES.HARD_SKILL:
+        case EXERCISE_TYPES.SEMI_HARD_SKILL:
+          html += renderType(exercise);
+          break;
+        case EXERCISE_TYPES.GROUPING:
+          html += renderGrouping(exercise);
+          break;
+        case EXERCISE_TYPES.TABLE_FILL:
+          html += renderTableFill(exercise);
+          break;
+        case EXERCISE_TYPES.GRAPH:
+          html += renderGraph(exercise);
+          break;
+        case EXERCISE_TYPES.STATIC:
+          // Static exercises just show content, no interaction
+          break;
+        default:
+          // Fallback to choices if available
+          if (exercise.choices && exercise.choices.length > 0) {
+            html += renderMultipleChoice(exercise);
+          }
       }
 
       html += '</div>';
 
       return html;
+    }
+
+    /**
+     * Get badge CSS class for exercise type
+     */
+    function getTypeBadgeClass(type) {
+      switch (type) {
+        case EXERCISE_TYPES.MULTI_SELECT:
+          return 'multi-select';
+        case EXERCISE_TYPES.MATCH:
+        case EXERCISE_TYPES.MATCH_WITH_IMAGE:
+          return 'match';
+        case EXERCISE_TYPES.TRUE_OR_FALSE:
+          return 'true-false';
+        case EXERCISE_TYPES.ARRANGE:
+        case EXERCISE_TYPES.COMPLETE_ARRANGE:
+          return 'arrange';
+        case EXERCISE_TYPES.TYPE:
+        case EXERCISE_TYPES.HARD_SKILL:
+        case EXERCISE_TYPES.SEMI_HARD_SKILL:
+          return 'type';
+        case EXERCISE_TYPES.GROUPING:
+          return 'grouping';
+        case EXERCISE_TYPES.TABLE_FILL:
+          return 'table';
+        default:
+          return '';
+      }
+    }
+
+    /**
+     * Render MULTIPLE_CHOICE exercise
+     */
+    function renderMultipleChoice(exercise) {
+      const choices = exercise.choices || [];
+      if (choices.length === 0) return '';
+
+      let html = '<div class="choices-container">';
+
+      choices.forEach((choice, index) => {
+        const isCorrect = index === 0; // First choice is always correct
+        const letter = String.fromCharCode(65 + index);
+
+        html += `<div class="choice-button ${isCorrect ? 'correct' : ''}">
+          <span class="choice-indicator">${isCorrect ? '&#x2713;' : letter}</span>
+          <span class="choice-content">${formatMathContent(choice)}</span>
+          ${isCorrect ? '<span class="correct-icon">&#x2713;</span>' : ''}
+        </div>`;
+      });
+
+      html += '</div>';
+      return html;
+    }
+
+    /**
+     * Render MULTI_SELECT exercise (multiple correct answers)
+     */
+    function renderMultiSelect(exercise) {
+      const choices = exercise.choices || [];
+      const correctAnswers = exercise.correctAnswers || [];
+      if (choices.length === 0) return '';
+
+      let html = '<div class="choices-container">';
+
+      choices.forEach((choice, index) => {
+        // Check if this choice is a correct answer
+        const isCorrect = correctAnswers.includes(choice) || index < correctAnswers.length;
+
+        html += `<div class="choice-button ${isCorrect ? 'correct' : ''}">
+          <span class="choice-checkbox">${isCorrect ? '&#x2713;' : ''}</span>
+          <span class="choice-content">${formatMathContent(choice)}</span>
+          ${isCorrect ? '<span class="correct-icon">&#x2713;</span>' : ''}
+        </div>`;
+      });
+
+      html += '</div>';
+      return html;
+    }
+
+    /**
+     * Render TRUE_OR_FALSE exercise
+     */
+    function renderTrueOrFalse(exercise) {
+      const correctAnswer = exercise.correctAnswer || exercise.choices?.[0] || 'True';
+      const isTrue = correctAnswer.toLowerCase() === 'true';
+
+      let html = '<div class="choices-container layout-row" style="gap: 16px;">';
+
+      html += `<div class="choice-button ${isTrue ? 'correct' : ''}" style="flex: 1; justify-content: center;">
+        <span class="choice-indicator">${isTrue ? '&#x2713;' : ''}</span>
+        <span class="choice-content">True</span>
+      </div>`;
+
+      html += `<div class="choice-button ${!isTrue ? 'correct' : ''}" style="flex: 1; justify-content: center;">
+        <span class="choice-indicator">${!isTrue ? '&#x2713;' : ''}</span>
+        <span class="choice-content">False</span>
+      </div>`;
+
+      html += '</div>';
+      return html;
+    }
+
+    /**
+     * Render MATCH exercise (matching pairs)
+     */
+    function renderMatch(exercise) {
+      const matches = exercise.matches || [];
+      if (matches.length === 0) return '';
+
+      let html = '<div class="match-container">';
+
+      matches.forEach((match, index) => {
+        const left = match.l || match.left || '';
+        const right = match.r || match.right || '';
+
+        html += `<div class="match-pair">
+          <div class="match-item">${formatMathContent(left)}</div>
+          <span class="match-arrow">&#x2194;</span>
+          <div class="match-item">${formatMathContent(right)}</div>
+        </div>`;
+      });
+
+      html += '</div>';
+      return html;
+    }
+
+    /**
+     * Render ARRANGE exercise (ordered list)
+     */
+    function renderArrange(exercise) {
+      const items = exercise.arrangeItems || exercise.choices || [];
+      if (items.length === 0) return '';
+
+      let html = '<div class="arrange-container">';
+
+      items.forEach((item, index) => {
+        const content = typeof item === 'object' ? item.choice || item.text : item;
+
+        html += `<div class="arrange-item">
+          <span class="arrange-number">${index + 1}</span>
+          <span class="arrange-content">${formatMathContent(content)}</span>
+        </div>`;
+      });
+
+      html += '</div>';
+      return html;
+    }
+
+    /**
+     * Render TYPE exercise (fill-in-blank / free input)
+     */
+    function renderType(exercise) {
+      const correctAnswers = exercise.correctAnswers || exercise.answers || [];
+      if (correctAnswers.length === 0 && !exercise.answer) return '';
+
+      let html = '<div class="input-container">';
+
+      if (exercise.answer) {
+        html += `<div class="input-field">
+          <span class="input-label">Answer:</span>
+          <div class="input-answer">${formatMathContent(exercise.answer)}</div>
+        </div>`;
+      } else {
+        correctAnswers.forEach((answer, index) => {
+          const label = correctAnswers.length > 1 ? `Answer ${index + 1}:` : 'Answer:';
+          html += `<div class="input-field">
+            <span class="input-label">${label}</span>
+            <div class="input-answer">${formatMathContent(answer)}</div>
+          </div>`;
+        });
+      }
+
+      html += '</div>';
+      return html;
+    }
+
+    /**
+     * Render GROUPING exercise (categorization)
+     */
+    function renderGrouping(exercise) {
+      const left = exercise.left || exercise.groupA || [];
+      const right = exercise.right || exercise.groupB || [];
+      const leftLabel = exercise.leftLabel || 'Group A';
+      const rightLabel = exercise.rightLabel || 'Group B';
+
+      if (left.length === 0 && right.length === 0) return '';
+
+      let html = '<div class="grouping-container">';
+
+      // Left column
+      html += '<div class="grouping-column">';
+      html += `<div class="grouping-header left">${escapeHtml(leftLabel)}</div>`;
+      left.forEach(item => {
+        html += `<div class="grouping-item left">${formatMathContent(item)}</div>`;
+      });
+      html += '</div>';
+
+      // Right column
+      html += '<div class="grouping-column">';
+      html += `<div class="grouping-header right">${escapeHtml(rightLabel)}</div>`;
+      right.forEach(item => {
+        html += `<div class="grouping-item right">${formatMathContent(item)}</div>`;
+      });
+      html += '</div>';
+
+      html += '</div>';
+      return html;
+    }
+
+    /**
+     * Render TABLE_FILL exercise
+     */
+    function renderTableFill(exercise) {
+      const headers = exercise.headers || [];
+      const rows = exercise.rows || [];
+      const answers = exercise.answers || {};
+
+      if (headers.length === 0 && rows.length === 0) return '';
+
+      let html = '<div class="table-container"><table class="exercise-table">';
+
+      // Headers
+      if (headers.length > 0) {
+        html += '<thead><tr>';
+        headers.forEach(header => {
+          html += `<th>${formatMathContent(header)}</th>`;
+        });
+        html += '</tr></thead>';
+      }
+
+      // Rows
+      if (rows.length > 0) {
+        html += '<tbody>';
+        rows.forEach((row, rowIndex) => {
+          html += '<tr>';
+          row.forEach((cell, cellIndex) => {
+            const isAnswer = answers[`${rowIndex}-${cellIndex}`] !== undefined;
+            const cellContent = isAnswer ? answers[`${rowIndex}-${cellIndex}`] : cell;
+            html += `<td class="${isAnswer ? 'answer' : ''}">${formatMathContent(cellContent)}</td>`;
+          });
+          html += '</tr>';
+        });
+        html += '</tbody>';
+      }
+
+      html += '</table></div>';
+      return html;
+    }
+
+    /**
+     * Render GRAPH exercise (placeholder - graphs are complex)
+     */
+    function renderGraph(exercise) {
+      const graphType = exercise.graphType || exercise.graphConfig?.graphType || 'unknown';
+
+      return `<div style="padding: 24px; background: var(--tertiary-50); border-radius: 12px; text-align: center; color: #6B7280;">
+        <div style="font-size: 32px; margin-bottom: 8px;">&#x1F4CA;</div>
+        <div style="font-size: 14px;">Graph Exercise: <strong>${formatExerciseType(graphType)}</strong></div>
+        <div style="font-size: 12px; margin-top: 4px;">Graph rendering requires native implementation</div>
+      </div>`;
     }
 
     /**
@@ -643,6 +1207,16 @@
     function formatMathContent(content) {
       if (!content) return '';
 
+      // Handle arrays (sometimes content comes as array of objects)
+      if (Array.isArray(content)) {
+        return content.map(item => {
+          if (typeof item === 'string') return formatMathContent(item);
+          if (item.type === 'latex') return formatMathContent(item.content);
+          if (item.type === 'text') return escapeHtml(item.content);
+          return '';
+        }).join('');
+      }
+
       // Check if KaTeX is available
       if (typeof katex === 'undefined') {
         console.error('KaTeX not loaded!');
@@ -672,6 +1246,11 @@
         }
       });
 
+      // Handle [[blank]] markers (fill-in-blank answers)
+      result = result.replace(/\[\[([^\]]+)\]\]/g, (match, answer) => {
+        return `<span class="blank-answer">${formatMathContent(answer)}</span>`;
+      });
+
       // Handle newlines and escape HTML in non-math parts
       result = result.replace(/\n/g, '<br>');
 
@@ -689,31 +1268,6 @@
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
-    }
-
-    /**
-     * Render choices for multiple choice exercises
-     */
-    function renderChoices(choices, exerciseType) {
-      // Determine layout based on choices
-      const layout = choices.length <= 4 ? 'layout-column' : 'layout-grid';
-
-      let html = `<div class="choices-container ${layout}">`;
-
-      choices.forEach((choice, index) => {
-        const isCorrect = index === 0; // First choice is always correct
-        const letter = String.fromCharCode(65 + index); // A, B, C, D...
-
-        html += `<div class="choice-button ${isCorrect ? 'correct' : ''}">
-          <span class="choice-indicator">${isCorrect ? '&#x2713;' : letter}</span>
-          <span class="choice-content">${formatMathContent(choice)}</span>
-          ${isCorrect ? '<span class="correct-icon">&#x2713;</span>' : ''}
-        </div>`;
-      });
-
-      html += '</div>';
-
-      return html;
     }
 
     /**
@@ -815,38 +1369,6 @@
         .replace(/\b\w/g, c => c.toUpperCase());
     }
 
-    /**
-     * Render math using KaTeX
-     */
-    function renderMath() {
-      // Wait for KaTeX to be available
-      if (typeof katex === 'undefined' || typeof renderMathInElement === 'undefined') {
-        setTimeout(renderMath, 100);
-        return;
-      }
-
-      const container = document.getElementById('app');
-
-      try {
-        renderMathInElement(container, {
-          delimiters: [
-            { left: '$$', right: '$$', display: true },
-            { left: '$', right: '$', display: false }
-          ],
-          throwOnError: false,
-          errorColor: '#EF4444',
-          strict: false,
-          trust: true,
-          macros: {
-            "\\blank": "\\underline{\\hspace{2em}}",
-            "\\ans": "\\boxed{#1}"
-          }
-        });
-      } catch (e) {
-        console.warn('KaTeX rendering error:', e);
-      }
-    }
-
     // Expose functions for testing
     window.aikea = {
       renderExercises,
@@ -863,25 +1385,78 @@
           data: {
             type: 'output',
             data: [
+              // MULTIPLE_CHOICE
               {
                 content: "[card]$\\left(\\frac{b^5}{b^?}\\right)^2=b^4$[/card]\nWhich value for $?$ makes the statement true?",
                 choices: ["$2$", "$3$", "$4$", "$5$"],
                 exerciseType: "MULTIPLE_CHOICE"
               },
+              // MULTI_SELECT
               {
-                content: "Simplify the expression: $3x^2 + 2x - 5 + x^2 - 3x + 2$",
-                choices: ["$4x^2 - x - 3$", "$4x^2 + x - 3$", "$2x^2 - x - 3$", "$4x^2 - x + 3$"],
-                exerciseType: "MULTIPLE_CHOICE"
+                content: "Select all expressions that are equivalent to $8x + 12$",
+                choices: ["$4(2x + 3)$", "$2(4x + 6)$", "$8(x + 4)$", "$4(2x + 4)$"],
+                correctAnswers: ["$4(2x + 3)$", "$2(4x + 6)$"],
+                exerciseType: "MULTI_SELECT"
               },
+              // TRUE_OR_FALSE
               {
-                content: "[card align=center]$\\sqrt{144} = ?$[/card]\nFind the square root.",
-                choices: ["$12$", "$14$", "$11$", "$13$"],
-                exerciseType: "MULTIPLE_CHOICE"
+                content: "The square root of 144 is 12.",
+                correctAnswer: "True",
+                exerciseType: "TRUE_OR_FALSE"
+              },
+              // MATCH
+              {
+                content: "Match each expression with its simplified form.",
+                matches: [
+                  { l: "$2^3$", r: "$8$" },
+                  { l: "$3^2$", r: "$9$" },
+                  { l: "$5^2$", r: "$25$" },
+                  { l: "$4^2$", r: "$16$" }
+                ],
+                exerciseType: "MATCH"
+              },
+              // ARRANGE
+              {
+                content: "Arrange the following steps to solve $2x + 5 = 13$",
+                choices: [
+                  "Subtract 5 from both sides",
+                  "Get $2x = 8$",
+                  "Divide both sides by 2",
+                  "Get $x = 4$"
+                ],
+                exerciseType: "ARRANGE"
+              },
+              // TYPE
+              {
+                content: "Solve for $x$: $3x - 7 = 14$",
+                answer: "$x = 7$",
+                exerciseType: "TYPE"
+              },
+              // GROUPING
+              {
+                content: "Sort the following into rational and irrational numbers.",
+                left: ["$\\frac{1}{2}$", "$0.75$", "$-3$"],
+                right: ["$\\sqrt{2}$", "$\\pi$", "$\\sqrt{5}$"],
+                leftLabel: "Rational",
+                rightLabel: "Irrational",
+                exerciseType: "GROUPING"
+              },
+              // TABLE_FILL
+              {
+                content: "Complete the table for $y = 2x + 1$",
+                headers: ["$x$", "$y$"],
+                rows: [
+                  ["$0$", "$1$"],
+                  ["$1$", "$3$"],
+                  ["$2$", "$5$"],
+                  ["$3$", "$7$"]
+                ],
+                exerciseType: "TABLE_FILL"
               }
             ],
             metadata: {
               inputs: {
-                topic: "Exponent Rules & Algebra",
+                topic: "Algebra & Number Properties",
                 difficulty: "medium",
                 grade: "8th"
               }
