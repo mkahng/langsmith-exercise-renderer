@@ -321,6 +321,26 @@
       font-size: 16px;
     }
 
+    /* Complete Arrange specific styles */
+    .arrange-item.complete-arrange {
+      background: var(--blue-50);
+      border-color: var(--info-400);
+    }
+
+    .arrange-blank-indicator {
+      width: 28px;
+      height: 28px;
+      background: var(--info-400);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
     /* Type/Input exercise styles */
     .input-container {
       display: flex;
@@ -965,21 +985,35 @@
     }
 
     /**
-     * Render ARRANGE exercise (ordered list)
+     * Render ARRANGE exercise (ordered list - order matters)
      */
     function renderArrange(exercise) {
       const items = exercise.arrangeItems || exercise.choices || [];
+      const isCompleteArrange = exercise.exerciseType === EXERCISE_TYPES.COMPLETE_ARRANGE;
+      const ignoreOrder = exercise.ignoreOrder || isCompleteArrange;
+
       if (items.length === 0) return '';
 
       let html = '<div class="arrange-container">';
 
+      // For COMPLETE_ARRANGE, show items as filled blanks (order doesn't matter)
+      // For ARRANGE, show numbered sequence (order matters)
       items.forEach((item, index) => {
         const content = typeof item === 'object' ? item.choice || item.text : item;
 
-        html += `<div class="arrange-item">
-          <span class="arrange-number">${index + 1}</span>
-          <span class="arrange-content">${formatMathContent(content)}</span>
-        </div>`;
+        if (ignoreOrder) {
+          // Complete Arrange: show as filled blanks without numbers
+          html += `<div class="arrange-item complete-arrange">
+            <span class="arrange-blank-indicator">&#x2713;</span>
+            <span class="arrange-content">${formatMathContent(content)}</span>
+          </div>`;
+        } else {
+          // Regular Arrange: show numbered sequence
+          html += `<div class="arrange-item">
+            <span class="arrange-number">${index + 1}</span>
+            <span class="arrange-content">${formatMathContent(content)}</span>
+          </div>`;
+        }
       });
 
       html += '</div>';
@@ -1415,7 +1449,7 @@
                 ],
                 exerciseType: "MATCH"
               },
-              // ARRANGE
+              // ARRANGE (order matters)
               {
                 content: "Arrange the following steps to solve $2x + 5 = 13$",
                 choices: [
@@ -1425,6 +1459,13 @@
                   "Get $x = 4$"
                 ],
                 exerciseType: "ARRANGE"
+              },
+              // COMPLETE_ARRANGE (order doesn't matter - fill in blanks)
+              {
+                content: "Fill in the blanks to complete the equation: $\\frac{?}{4} + \\frac{?}{4} = \\frac{5}{4}$",
+                choices: ["$2$", "$3$"],
+                ignoreOrder: true,
+                exerciseType: "COMPLETE_ARRANGE"
               },
               // TYPE
               {
